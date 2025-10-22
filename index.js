@@ -69,3 +69,24 @@ app.delete("/api/mahasiswa/:id", (req, res) => {
         res.json({ message: "User deletedc successfuly" });
     });
 });
+app.put('/api/mahasiswa/:id', (req, res) => {
+    // 'req' is now the request object, which has .params
+    const userId = req.params.id; // This will now work correctly
+    const { nama, alamat, agama } = req.body;
+    db.query(
+        "UPDATE biodata SET nama = ?,alamat = ?,agama = ? WHERE id = ?",
+        [nama, alamat, agama, userId],
+        (err, results) => {
+            if (err) {
+                console.error(err);
+
+                return res.status(500).json({ message: "Database Error" }); 
+            }
+            res.json({ message: "User updated successfully" });
+        }
+    )
+})
+app.listen(PORT, () => {
+    console.log(`Server is running ${PORT}`);
+})
+
