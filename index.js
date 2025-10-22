@@ -39,5 +39,23 @@ app.get('/api/mahasiswa', (req, res) => {
         res.json(results);
     });
 });
+//api post: tambah data
+app.post('/api/mahasiswa', (req, res) => {
+    const { nama, alamat, agama } = req.body;
 
+    if (!nama || !alamat || !agama) {
+        return res.status(400).json({ message: "Nama, alamat, dan agama harus diisi." })
+    }
+
+    db.query(
+        "INSERT INTO biodata (nama, alamat, agama) VALUES (?, ?, ?)",
+        [nama, alamat, agama],
+        (err, result) => {
+            if (err) {
+                console.error("Error inserting data: ", err);
+            }
+            res.status(201).json({ message: "User create successfully" });
+        }
+    );
+});
 
